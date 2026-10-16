@@ -1,1 +1,45 @@
-{}
+{
+  "baby/baby-bunny-beach.avif": {
+    "width": 512,
+    "height": 341,
+    "widths": [
+      480,
+      512
+    ]
+  },
+  "birthday/cake-smash.avif": {
+    "width": 683,
+    "height": 1024,
+    "widths": [
+      480,
+      683
+    ]
+  },
+  "maternity/maternity-red-gown.avif": {
+    "width": 1024,
+    "height": 831,
+    "widths": [
+      480,
+      800,
+      1024
+    ]
+  },
+  "pre-wedding/sunset-silhouette.avif": {
+    "width": 1024,
+    "height": 956,
+    "widths": [
+      480,
+      800,
+      1024
+    ]
+  },
+  "weddings/bride-green-silk.avif": {
+    "width": 820,
+    "height": 1024,
+    "widths": [
+      480,
+      800,
+      820
+    ]
+  }
+}

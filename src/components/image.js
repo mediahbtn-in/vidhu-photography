@@ -30,7 +30,9 @@ export function createImage({ image, alt = '', focus }, { sizes = '100vw', eager
     picture.append(source);
   }
   const img = document.createElement('img');
-  img.src = BASE + image; // untouched original as the universal fallback
+  // Fallback for browsers without srcset/<source> support: the largest WebP variant.
+  // The untouched original stays in /public/images alongside it.
+  img.src = srcset(image, [info.widths.at(-1)], 'webp').split(' ')[0];
   img.alt = alt;
   img.width = info.width;
   img.height = info.height;
@@ -50,7 +52,7 @@ export function createPlaceholder(image, className = '') {
   el.setAttribute('aria-label', 'Photograph to be added');
   el.innerHTML = `<span class="placeholder__mark" aria-hidden="true">+</span>
     <span class="placeholder__label">Photograph pending</span>
-    <span class="placeholder__file">${image ? `/images/${image}` : 'no image set'}</span>`;
+    ${import.meta.env.DEV ? `<span class="placeholder__file">${image ? `/images/${image}` : 'no image set'}</span>` : ''}`;
   return el;
 }
 

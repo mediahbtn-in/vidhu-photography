@@ -1,5 +1,5 @@
 import { categories } from '../data/categories.js';
-import { createImage } from './image.js';
+import { createImage, imageInfo } from './image.js';
 
 const pad = (n) => String(n).padStart(2, '0');
 
@@ -18,6 +18,10 @@ export function initLightbox() {
     const item = items[index];
     const pic = createImage({ ...item, focus: null }, { sizes: '100vw', eager: true, className: 'lightbox__img' });
     pic.classList.add('lightbox__pic');
+    // never blow a small original up more than 1.25× — it would turn soft
+    const info = imageInfo(item.image);
+    const img = pic.querySelector('img');
+    if (info && img) img.style.maxWidth = `min(100%, ${Math.round(info.width * 1.25)}px)`;
     if (dir) pic.style.setProperty('--from', `${dir * 24}px`);
     stage.replaceChildren(pic);
     count.textContent = `${pad(index + 1)} / ${pad(items.length)}`;

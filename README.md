@@ -16,22 +16,40 @@ npm run preview        # serve the production build
 
 ---
 
-## ⚠️ Status: real photographs and business details still needed
+## ⚠️ Status: more photographs and the business details are still needed
 
 The brief requires the redesign to reuse the photographs and business information from the
 existing site, <https://vidhuphotography.framer.website/>. **The build environment could not reach that
-site:** the hostname did not resolve, and requests to `framerusercontent.com` (Framer's image CDN) were blocked
-by the network policy. So:
+site:** the hostname did not resolve, and requests to `framerusercontent.com` (Framer's image CDN) were
+blocked by the network policy.
 
-- **No photographs are included yet.** Nothing has been replaced with stock or AI imagery. Every
-  image position shows a labelled **"Photograph pending"** frame naming the exact file it expects.
-  When the file exists, the real photograph appears automatically.
-- **No contact details are included yet.** Email, phone, WhatsApp, Instagram, Facebook and
-  location are all `null` in `src/config/site.js`. Anything left `null` isn't shown at all.
+**Photographs supplied so far (5):** these were uploaded directly and are used unchanged, as
+originals in `public/images/`:
+
+| File | Shows | Used in |
+| --- | --- | --- |
+| `weddings/bride-green-silk.avif` (820×1024) | Bride in green silk and gold temple jewellery, from above | Hero (main), gallery, wedding service |
+| `birthday/cake-smash.avif` (683×1024) | Toddler after a birthday cake smash | Hero (overlap), gallery, birthday service |
+| `pre-wedding/sunset-silhouette.avif` (1024×956) | Couple silhouetted at sunset | "A moment in time" feature, gallery, pre-wedding service |
+| `maternity/maternity-red-gown.avif` (1024×831) | Expectant mother in a red gown and flower crown | About section, gallery, maternity service |
+| `baby/baby-bunny-beach.avif` (512×341) | Baby in bunny ears by the sea | Gallery, baby service |
+
+**Still missing:**
+
+- **A portrait of Vidhu.** None of the five photos is of the photographer, so the About section uses
+  a portfolio photo with the caption "From the portfolio", not a claim that it's Vidhu. Add a real
+  portrait as `about/vidhu.jpg`, then point `slots.about` at it with `isPortrait: true`.
+- **Baby-shower photography.** The service is listed, but its preview shows a "Photograph pending"
+  frame until a photo is added (`services.js` → `image`).
+- **Higher-resolution originals.** The uploads are Framer's resized copies (1024 px max; the baby
+  photo is 512 px). They look fine at normal size but soft on large retina screens, especially the
+  hero and the full-width feature. If Vidhu has the camera originals, drop them in with the same
+  filenames and rebuild. The gallery never puts an original under 800 px wide into a large frame.
+- **More portfolio images.** Any further photos from the existing site (see step 1 below).
+- **Contact details.** Email, phone, WhatsApp, Instagram, Facebook and location are all `null` in
+  `src/config/site.js`. Anything left `null` isn't shown at all.
 - **The FAQ answers are cautious drafts.** The questions match the existing site, but its answers
-  could not be read (see [FAQ](#faq)).
-
-Complete the steps below from a computer with normal internet access.
+  could not be read (see the checklist below).
 
 ### 1. Download the original photographs
 
@@ -50,17 +68,19 @@ image appeared: the page, its alt text and the nearest heading. Use that to sort
 Move each file into `public/images/<group>/` and rename it to match `src/data/portfolio.js`, or
 edit the data file to use your filenames. Not every category needs the same number of images.
 
-| Folder                     | Used for                                                                |
-| -------------------------- | ----------------------------------------------------------------------- |
-| `hero/hero-main.jpg`       | The main hero photograph. Choose the strongest, most emotive portrait-orientation image. |
-| `hero/hero-secondary.jpg`  | The smaller overlapping hero image.                                     |
-| `weddings/`                | Traditional wedding. `wedding-feature.jpg` is the full-width "A moment in time" image, so landscape works best. |
-| `pre-wedding/`             | Pre-wedding shoots                                                      |
-| `maternity/`               | Maternity                                                               |
-| `baby/`                    | Baby shoots                                                             |
-| `baby-shower/`             | Baby showers                                                            |
-| `birthday/`                | Birthdays                                                               |
-| `about/vidhu.jpg`          | About section. See the note below.                                      |
+| Folder | Used for |
+| --- | --- |
+| `weddings/` | Traditional wedding |
+| `pre-wedding/` | Pre-wedding shoots |
+| `maternity/` | Maternity |
+| `baby/` | Baby shoots |
+| `baby-shower/` | Baby showers |
+| `birthday/` | Birthdays |
+| `about/` | Photos of Vidhu |
+
+Which photo appears in the hero, the full-width feature and the About section is set by `slots` in
+`src/data/portfolio.js`. For the hero, pick the strongest, most emotive portrait-orientation image.
+For the feature, use a landscape image. JPEG, PNG, WebP and AVIF originals all work.
 
 **About-section image:** use it only if the existing About image is a genuine portrait of Vidhu.
 If it isn't, point `slots.about` in `src/data/portfolio.js` at a relevant portfolio photograph and set
@@ -80,8 +100,8 @@ npm run assets:build
 For every original in `public/images/`, this generates AVIF and WebP variants (480–2400 px, never
 upscaled) in `_r/` sub-folders. It writes `src/data/image-manifest.json` with each image's
 intrinsic size, which the page uses for `width`/`height` so there is no layout shift. It also makes
-`public/images/og.jpg` (1200×630) from the hero image for social sharing. **Originals are never
-modified**, and they're still served as the fallback `<img src>`.
+`public/images/og.jpg` (1200×630) from the hero photo for social sharing. **Originals are never
+modified**. Browsers get AVIF or WebP at the right size; the largest WebP is the fallback `<img src>`.
 
 `npm run build` runs this step automatically and skips variants that are already up to date. The
 generated `_r/` folders and `og.jpg` are git-ignored. Any host that runs `npm run build`

@@ -8,15 +8,17 @@
  *
  * Originals are never modified. Variants go to public/images/<group>/_r/ and
  * are never upscaled beyond the original's width. Also produces
- * public/images/og.jpg (1200×630) from hero/hero-main.* for social sharing.
+ * public/images/og.jpg (1200×630) from the hero photograph (slots.heroMain in
+ * src/data/portfolio.js) for social sharing.
  */
 import { readdir, mkdir, writeFile, stat } from 'node:fs/promises';
 import path from 'node:path';
 import sharp from 'sharp';
+import { slots } from '../src/data/portfolio.js';
 
 const ROOT = path.resolve('public/images');
 const WIDTHS = [480, 800, 1200, 1600, 2400];
-const EXT = /\.(jpe?g|png|webp|tiff?)$/i;
+const EXT = /\.(jpe?g|png|webp|avif|tiff?)$/i;
 
 async function walk(dir) {
   const out = [];
@@ -57,8 +59,8 @@ for (const file of await walk(ROOT)) {
   console.log(`✓ ${rel}  ${width}×${height}  → ${widths.join(', ')}`);
 }
 
-const hero = Object.keys(manifest).find((k) => k.startsWith('hero/hero-main'));
-if (hero) {
+const hero = slots.heroMain?.image;
+if (hero && manifest[hero]) {
   await sharp(path.join(ROOT, hero)).rotate().resize(1200, 630, { fit: 'cover', position: 'attention' }).jpeg({ quality: 86 }).toFile(path.join(ROOT, 'og.jpg'));
   console.log('✓ og.jpg (social sharing image)');
 }

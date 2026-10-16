@@ -10,21 +10,27 @@ function orientation(item, i) {
   return item.orientation || (i % 2 ? 'P' : 'L'); // placeholder hint
 }
 
+/** Originals narrower than this are only ever given a narrow column, so they're never blown up soft. */
+const SMALL = 800;
+const isSmall = (item) => (imageInfo(item.image)?.width ?? Infinity) < SMALL;
+
 /**
  * Art-directed layout on a 12-column grid. Rows are composed from the actual
  * orientations so portraits are never forced into wide crops:
  *   L+P → 7/5 or 8/4 · P+L → 5/7 or 4/8 · L+L → 6/6 · P+P+P → 4/4/4
  * Mobile uses a 2-column grid: landscapes full width, portraits paired.
+ * Small originals are composed as narrow (P) slots but keep a landscape crop.
  */
 function compose(items) {
-  const o = items.map(orientation);
+  const real = items.map(orientation);
+  const o = items.map((it, i) => (isSmall(it) ? 'P' : real[i]));
   const out = items.map(() => ({}));
   let i = 0, variant = 0;
   while (i < items.length) {
     const a = o[i], b = o[i + 1], c = o[i + 2];
     const alt = variant++ % 2;
     if (b === undefined) {
-      out[i] = a === 'L' ? { span: 12, ratio: '21 / 9' } : { span: 6, ratio: '4 / 5', start: 4 };
+      out[i] = a === 'L' ? { span: 8, ratio: '3 / 2', start: 3 } : { span: 6, ratio: '4 / 5', start: 4 };
       i += 1;
     } else if (a === 'P' && b === 'P' && c === 'P') {
       [0, 1, 2].forEach((k) => (out[i + k] = { span: 4, ratio: '4 / 5', lift: k === 1 }));
@@ -43,6 +49,9 @@ function compose(items) {
       i += 2;
     }
   }
+  items.forEach((it, j) => {
+    if (isSmall(it) && real[j] === 'L') out[j].ratio = '4 / 3';
+  });
   // mobile pass
   for (let j = 0; j < items.length; j++) {
     if (o[j] === 'P' && o[j + 1] === 'P') { out[j].m = 1; out[j + 1].m = 1; j++; }
