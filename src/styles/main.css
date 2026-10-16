@@ -1406,6 +1406,11 @@ em {
 .about__portrait .frame__caption {
   border-top-right-radius: 0;
 }
+/* Rectangle variant for group/landscape photos: wider column, no arch */
+.about__portrait--rect {
+  grid-column: 1 / 7;
+  border-radius: 0;
+}
 .about__secondary {
   grid-column: 5 / 7;
   grid-row: 1;

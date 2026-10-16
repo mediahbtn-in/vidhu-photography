@@ -31,14 +31,17 @@ originals in `public/images/`:
 | `weddings/bride-green-silk.avif` (820×1024) | Bride in green silk and gold temple jewellery, from above | Hero (main), gallery, wedding service |
 | `birthday/cake-smash.avif` (683×1024) | Toddler after a birthday cake smash | Hero (overlap), gallery, birthday service |
 | `pre-wedding/sunset-silhouette.avif` (1024×956) | Couple silhouetted at sunset | "A moment in time" feature, gallery, pre-wedding service |
-| `maternity/maternity-red-gown.avif` (1024×831) | Expectant mother in a red gown and flower crown | About section, gallery, maternity service |
+| `maternity/maternity-red-gown.avif` (1024×831) | Expectant mother in a red gown and flower crown | Gallery, maternity service |
+| `about/wow-tamil-nadu-explorer-award.webp` (782×702) | Prize-giving on stage at WOW Tamil Nadu: Explorer Award, 2nd prize | About section |
 | `baby/baby-bunny-beach.avif` (512×341) | Baby in bunny ears by the sea | Gallery, baby service |
 
 **Still missing:**
 
-- **A portrait of Vidhu.** None of the five photos is of the photographer, so the About section uses
-  a portfolio photo with the caption "From the portfolio", not a claim that it's Vidhu. Add a real
-  portrait as `about/vidhu.jpg`, then point `slots.about` at it with `isPortrait: true`.
+- **A solo portrait of Vidhu (optional).** The About section shows the WOW Tamil Nadu award photo,
+  captioned "WOW Tamil Nadu · Explorer Award, 2nd prize". It's a group shot, so neither the caption
+  nor the alt text says which person is Vidhu. Confirm the caption wording with Vidhu. A solo
+  portrait would let visitors see exactly who they're booking: add it to `about/`, point
+  `slots.about` at it, and remove `arch: false` to get the arched frame back.
 - **Baby-shower photography.** The service is listed, but its preview shows a "Photograph pending"
   frame until a photo is added (`services.js` → `image`).
 - **Higher-resolution originals.** The uploads are Framer's resized copies (1024 px max; the baby
@@ -82,10 +85,10 @@ Which photo appears in the hero, the full-width feature and the About section is
 `src/data/portfolio.js`. For the hero, pick the strongest, most emotive portrait-orientation image.
 For the feature, use a landscape image. JPEG, PNG, WebP and AVIF originals all work.
 
-**About-section image:** use it only if the existing About image is a genuine portrait of Vidhu.
-If it isn't, point `slots.about` in `src/data/portfolio.js` at a relevant portfolio photograph and set
-`isPortrait: false`. The caption then reads "From the portfolio" instead of "Vidhu, behind the
-lens". Never use a stock or generated portrait. `slots.aboutSecondary` (Vidhu at work) is optional
+**About-section image:** only use a genuine photo of Vidhu (`slots.about` in
+`src/data/portfolio.js`). `caption` replaces the default "Vidhu, behind the lens". `arch: false`
+switches the tall arched crop to a plain rectangle at the photo's own proportions, for group or
+landscape shots. Never use a stock or generated portrait. `slots.aboutSecondary` (Vidhu at work) is optional
 and stays hidden unless a genuine photo is set.
 
 Then update each entry's **`alt`** text to describe what is actually in the photo. Use **`focus`**

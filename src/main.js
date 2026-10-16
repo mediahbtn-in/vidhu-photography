@@ -18,7 +18,13 @@ hydrateSlots(slots);
 
 // About: caption honestly reflects whether the photo is Vidhu or a portfolio image
 const aboutCaption = document.querySelector('[data-about-caption]');
-if (!slots.about.isPortrait) aboutCaption.textContent = 'From the portfolio';
+if (slots.about.caption) aboutCaption.textContent = slots.about.caption;
+const aboutInfo = imageInfo(slots.about.image);
+if (slots.about.arch === false) {
+  const frame = document.querySelector('.about__portrait');
+  frame.classList.add('about__portrait--rect');
+  if (aboutInfo) frame.style.aspectRatio = `${aboutInfo.width} / ${aboutInfo.height}`;
+}
 if (slots.aboutSecondary.image && imageInfo(slots.aboutSecondary.image)) {
   document.querySelector('[data-about-secondary]').hidden = false;
 }

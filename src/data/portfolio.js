@@ -76,15 +76,16 @@ export const slots = {
     focus: '50% 12%', // keep both heads in frame in the wide crop
   },
   /**
-   * Only use a genuine portrait of Vidhu here with `isPortrait: true`.
-   * No portrait of Vidhu has been supplied yet, so this shows a portfolio
-   * photograph and the caption reads "From the portfolio".
+   * About-section photo. Only a genuine photo of Vidhu belongs here.
+   *   caption   overrides the default caption ("Vidhu, behind the lens")
+   *   arch      false = plain rectangle at the photo's own proportions
+   *             (use for group or landscape shots the tall arch would crop)
    */
   about: {
-    image: 'maternity/maternity-red-gown.avif',
-    alt: 'An expectant mother in a red gown and floral crown beside an ivy-covered pillar',
-    focus: '56% 30%',
-    isPortrait: false,
+    image: 'about/wow-tamil-nadu-explorer-award.webp',
+    alt: 'Three men on stage at WOW Tamil Nadu holding an oversized cheque for the Explorer Award 2nd prize and a framed certificate',
+    caption: 'WOW Tamil Nadu · Explorer Award, 2nd prize',
+    arch: false,
   },
   /** Optional: Vidhu at work. Leave `image: null` if no genuine photo exists. */
   aboutSecondary: { image: null, alt: 'Vidhu photographing a session' },
