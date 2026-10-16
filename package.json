@@ -1,0 +1,18 @@
+{
+  "name": "vidhu-photography",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Vidhu Photography — editorial photography portfolio and booking site.",
+  "scripts": {
+    "dev": "vite",
+    "build": "node scripts/build-images.mjs && vite build",
+    "preview": "vite preview",
+    "assets:fetch": "node scripts/fetch-framer-assets.mjs",
+    "assets:build": "node scripts/build-images.mjs"
+  },
+  "devDependencies": {
+    "sharp": "^0.33.5",
+    "vite": "^5.4.10"
+  }
+}
